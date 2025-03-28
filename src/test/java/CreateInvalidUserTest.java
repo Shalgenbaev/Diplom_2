@@ -23,9 +23,10 @@ public class CreateInvalidUserTest {
     public void registerUserWithoutName() {
         UserWithoutName userWithoutName = userGenerator.createUserWithoutName();
 
-        ValidatableResponse response = userClient.registerUserWithoutName(userWithoutName);
+        Response response = userClient.registerUser(userWithoutName);
 
-        response.statusCode(HttpStatus.SC_FORBIDDEN)
+        response.then()
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .and().body(SUCCESS, equalTo(false))
                 .and().body(MESSAGE, equalTo(TEXT_MESSAGE_REQUIRED_FIELDS));
     }
@@ -46,9 +47,10 @@ public class CreateInvalidUserTest {
     public void registerUserWithoutPassword() {
         UserWithoutPassword userWithoutPassword = userGenerator.createUserWithoutPassword();
 
-        ValidatableResponse response = userClient.registerUserWithoutPassword(userWithoutPassword);
+        Response response = userClient.registerUser(userWithoutPassword);
 
-        response.statusCode(HttpStatus.SC_FORBIDDEN)
+        response.then()
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .and().body(SUCCESS, equalTo(false))
                 .and().body(MESSAGE, equalTo(TEXT_MESSAGE_REQUIRED_FIELDS));
     }
@@ -69,9 +71,10 @@ public class CreateInvalidUserTest {
     public void registerUserWithoutEmail() {
         UserWithoutEmail userWithoutEmail = userGenerator.createUserWithoutEmail();
 
-        ValidatableResponse response = userClient.registerUserWithoutEmail(userWithoutEmail);
+        Response response = userClient.registerUser(userWithoutEmail);
 
-        response.statusCode(HttpStatus.SC_FORBIDDEN)
+        response.then()
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .and().body(SUCCESS, equalTo(false))
                 .and().body(MESSAGE, equalTo(TEXT_MESSAGE_REQUIRED_FIELDS));
     }

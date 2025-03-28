@@ -1,4 +1,5 @@
 package ru.yandex.practicum.client.user;
+
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -17,67 +18,22 @@ public class UserClient extends Client {
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
     @Step("Регистрация пользователя")
-    public Response registerUser(User user) {
+    public Response registerUser(Object userData) {
         return specification()
-                .body(user)
+                .body(userData)
                 .when()
                 .post(ROOT + REGISTER);
     }
 
-    @Step("Регистрация пользователя без поля name")
-    public ValidatableResponse registerUserWithoutName(UserWithoutName userWithoutName) {
-        return specification()
-                .body(userWithoutName)
-                .post(ROOT + REGISTER)
-                .then();
-    }
-
-    @Step("Регистрация пользователя без поля password")
-    public ValidatableResponse registerUserWithoutPassword(UserWithoutPassword userWithoutPassword) {
-        return specification()
-                .body(userWithoutPassword)
-                .post(ROOT + REGISTER)
-                .then();
-    }
-
-    @Step("Регистрация пользователя без поля email")
-    public ValidatableResponse registerUserWithoutEmail(UserWithoutEmail userWithoutEmail) {
-        return specification()
-                .body(userWithoutEmail)
-                .post(ROOT + REGISTER)
-                .then();
-    }
-
     @Step("Авторизация пользователя")
-    public Response loginUser(User user) {
+    public Response loginUser(Object userData) {
         return specification()
-                .body(user)
+                .body(userData)
                 .post(ROOT + LOGIN);
     }
 
-    @Step("Авторизация пользователя без поля name")
-    public ValidatableResponse loginUserWithoutName(UserWithoutName userWithoutName) {
-        return specification()
-                .body(userWithoutName)
-                .post(ROOT + LOGIN)
-                .then();
-    }
-
-    @Step("Авторизация пользователя без поля password")
-    public ValidatableResponse loginUserWithoutPassword(UserWithoutPassword userWithoutPassword) {
-        return specification()
-                .body(userWithoutPassword)
-                .post(ROOT + LOGIN)
-                .then();
-    }
-
-    @Step("Авторизация пользователя без поля email")
-    public ValidatableResponse loginUserWithoutEmail(UserWithoutEmail userWithoutEmail) {
-        return specification()
-                .body(userWithoutEmail)
-                .post(ROOT + LOGIN)
-                .then();
-    }
+    // Остальные методы остаются без изменений
+    // ...
 
     @Step("Получение информации о пользователе")
     public Response getUserInfo(String accessToken) {
@@ -85,7 +41,6 @@ public class UserClient extends Client {
                 .header(HEADER_AUTHORIZATION, accessToken)
                 .get(ROOT + USER);
     }
-
 
     @Step("Изменение пользователя c авторизацией")
     public Response updateUser(Map<String, String> updateData, String accessToken) {

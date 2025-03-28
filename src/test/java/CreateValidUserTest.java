@@ -2,6 +2,7 @@ import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
+import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.practicum.client.user.UserClient;
 import ru.yandex.practicum.generator.UserGenerator;
@@ -15,10 +16,15 @@ public class CreateValidUserTest extends BaseTest {
     private final UserClient userClient = new UserClient();
     private final UserGenerator userGenerator = new UserGenerator();
 
+    @Before
+    public void setUp() {
+        user = userGenerator.createUser();
+        log.info("Создан пользователь для теста: {}", user);
+    }
+
     @Test
     @DisplayName("Регистрация валидного пользователя")
     public void registerUniqueUser() {
-        user = userGenerator.createUser();
         log.info("Попытка создания пользователя: {}", user);
 
         Response response = userClient.registerUser(user);
@@ -33,7 +39,6 @@ public class CreateValidUserTest extends BaseTest {
     @Test
     @DisplayName("Повторная регистрация уже имеющегося пользователя")
     public void registerUserWithExistingEmail() {
-        user = userGenerator.createUser();
         Response response = userClient.registerUser(user);
         accessToken = response.body().path("accessToken");
         response.then()

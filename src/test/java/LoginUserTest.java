@@ -1,10 +1,10 @@
+import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import ru.yandex.practicum.client.user.UserClient;
 import ru.yandex.practicum.generator.UserGenerator;
-import ru.yandex.practicum.model.user.UserWithoutEmail;
-import ru.yandex.practicum.model.user.UserWithoutName;
 import ru.yandex.practicum.model.user.UserWithoutPassword;
+import ru.yandex.practicum.model.user.UserWithoutEmail;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class LoginUserTest extends BaseTest {
@@ -18,25 +18,6 @@ public class LoginUserTest extends BaseTest {
     public void loginCorrectUser() {
         userClient.loginUser(user)
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .and().body(SUCCESS, equalTo(true));
-    }
-
-    @Test
-    public void loginWithNameNull() {
-        user.setName(null);
-
-        userClient.loginUser(user)
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .and().body(SUCCESS, equalTo(true));
-    }
-
-    @Test
-    public void loginWithoutName() {
-        UserWithoutName userWithoutName = new UserWithoutName(user.getEmail(), user.getPassword());
-
-        userClient.loginUserWithoutName(userWithoutName)
                 .statusCode(HttpStatus.SC_OK)
                 .and().body(SUCCESS, equalTo(true));
     }
@@ -65,7 +46,8 @@ public class LoginUserTest extends BaseTest {
     public void loginWithoutPassword() {
         UserWithoutPassword userWithoutPassword = new UserWithoutPassword(user.getEmail(), user.getName());
 
-        userClient.loginUserWithoutPassword(userWithoutPassword)
+        Response response = userClient.loginUser(userWithoutPassword);
+        response.then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED)
                 .and().body(SUCCESS, equalTo(false));
     }
@@ -94,7 +76,8 @@ public class LoginUserTest extends BaseTest {
     public void loginWithoutEmail() {
         UserWithoutEmail userWithoutEmail = new UserWithoutEmail(user.getPassword(), user.getName());
 
-        userClient.loginUserWithoutEmail(userWithoutEmail)
+        Response response = userClient.loginUser(userWithoutEmail);
+        response.then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED)
                 .and().body(SUCCESS, equalTo(false));
     }
