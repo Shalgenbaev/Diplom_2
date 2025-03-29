@@ -17,7 +17,7 @@ public class Ingredient {
     private int calories;
     private float price;
     private String image;
-    private String image_mobile;
-    private String image_large;
-    private int __v;
+    private String imageMobile;
+    private String imageLarge;
+    private int version;
 }
